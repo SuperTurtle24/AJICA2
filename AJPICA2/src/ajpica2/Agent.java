@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package ajpica2;
-import java.util.concurrent.*;
-import java.util.HashMap;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -22,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author super
  */
-public abstract class Agent 
+public class Agent 
 {    
     private ServerSocket serverSocket;
     private String receivedIp;

@@ -4,15 +4,30 @@
  * and open the template in the editor.
  */
 package ajpica2;
-
+import ajpica2.Ticket.Ticketing;
+import java.util.ArrayList;
 /**
  *
  * @author super
  */
-public class TicketLogger extends Agent
+public class TicketLogger
 {
+    private ArrayList<Ticketing> ticketList = new ArrayList<>();
+    private Agent loggingAgent;
+    
     public TicketLogger(String h, String ri, int rp)
     {
-        super(h, ri, rp);
+        loggingAgent = new Agent(h, ri, rp);
+    }
+
+    
+    public void addTicket(Ticketing t)
+    {
+        ticketList.add(t);
+    }
+    
+    public int ticketCount()
+    {
+        return ticketList.size();
     }
 }
