@@ -12,7 +12,11 @@ package ajpica2;
 public class AJPICA2 {
     public static void main(String[] args) 
     {
-        // TODO code application logic here
+        String handle = "";
+        String recievedIp = "";
+        int port = 0;
+        TicketLogger tl = new TicketLogger(handle, recievedIp, port);
+        tl.begin();
     }
     
 }

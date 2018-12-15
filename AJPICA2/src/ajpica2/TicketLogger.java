@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 package ajpica2;
+import java.io.IOException;
 import ajpica2.Ticket.Ticketing;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author super
@@ -19,7 +22,17 @@ public class TicketLogger
     {
         loggingAgent = new Agent(h, ri, rp);
     }
-
+    
+    public void begin()
+    {
+        try{
+        loggingAgent.start();
+        }
+        catch(IOException e)
+        {
+            Logger.getLogger(TicketLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
     
     public void addTicket(Ticketing t)
     {
