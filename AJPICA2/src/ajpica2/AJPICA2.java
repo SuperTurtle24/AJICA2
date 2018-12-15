@@ -12,10 +12,11 @@ package ajpica2;
 public class AJPICA2 {
     public static void main(String[] args) 
     {
-        String handle = "";
-        String recievedIp = "";
-        int port = 0;
-        TicketLogger tl = new TicketLogger(handle, recievedIp, port);
+        String loggerHandle = "";
+        String loggerRecievedIp = "";
+        int loggerPort = 0;
+        
+        TicketLogger tl = new TicketLogger(loggerHandle, loggerRecievedIp, loggerPort);
         tl.begin();
     }
     

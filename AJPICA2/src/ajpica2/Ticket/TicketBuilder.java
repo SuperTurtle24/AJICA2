@@ -1,15 +1,21 @@
 package ajpica2.Ticket;
 
 //@author scott
+import ajpica2.Agent;
+import ajpica2.TicketLogger;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class TicketBuilder extends JFrame implements ActionListener {
 
     private Ticketing t;
+    private Agent ticketAgent;
     protected JFrame ticketBuilder = new JFrame("Ticket Builder");
 
     /**
@@ -23,6 +29,21 @@ public class TicketBuilder extends JFrame implements ActionListener {
     JRadioButton distanceDButton = new JRadioButton("5 miles +");
 
     public TicketBuilder() {
+        final int width = 400, height = 200;
+        ticketBuilder.setSize(width, height);
+        ticketBuilder.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        addRadioButtons();
+        addUpgradesPanel();
+        addPricePanel();
+
+        t = new DistanceA(); //prevents NullPointers if someone clicks upgrades
+
+        ticketBuilder.setVisible(true);
+    }
+    
+    public TicketBuilder(String h, String ri, int rp) {
+        ticketAgent = new Agent(h, ri, rp);
         final int width = 400, height = 200;
         ticketBuilder.setSize(width, height);
         ticketBuilder.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -157,6 +178,18 @@ public class TicketBuilder extends JFrame implements ActionListener {
                 t = new DistanceD();
         }
         priceLabel.setText(Double.toString(t.getCost()));
+    }
+    
+    public void begin()
+    {
+        try{
+            ticketAgent.start();
+            System.out.println("Agent started");
+        }
+        catch(IOException e)
+        {
+            Logger.getLogger(TicketLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
 }

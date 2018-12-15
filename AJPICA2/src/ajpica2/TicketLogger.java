@@ -26,7 +26,8 @@ public class TicketLogger
     public void begin()
     {
         try{
-        loggingAgent.start();
+            loggingAgent.start();
+            System.out.println("Agent started");
         }
         catch(IOException e)
         {
