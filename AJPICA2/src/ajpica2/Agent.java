@@ -22,18 +22,14 @@ import java.util.logging.Logger;
  *
  * @author super
  */
-public class Agent 
-{
-    private static final String defaultIP = "127.0.0.1";
-    private static final int defaultPort = 9090;
-    
+public abstract class Agent 
+{    
     private ServerSocket serverSocket;
     private String receivedIp;
     private String handle;
     private int receivedPort;
     private final Object lock = new Object();
     
-    private final BlockingQueue messageList = new ArrayBlockingQueue(1024);
     private HashMap<String, Portal> portalMap = new HashMap<>();
     private HashMap<String, Agent> agentMap = new HashMap<>();
     
@@ -265,9 +261,33 @@ public class Agent
         agentMap.remove(k);
     }
     
-    public void recieveMessage()
-    {
+    public synchronized List<String> getConnectionHandles() {
+        List<String> peerGroupHandleList = new ArrayList<>();
+        connectionMap.
+             values().
+             stream().
+             forEach
+                ( 
+                    (connection) -> { peerGroupHandleList.add(connection.getHandle()); }
+                );
         
+        Collections.sort(peerGroupHandleList);
+        
+        return Collections.unmodifiableList(peerGroupHandleList);
     }
     
+    public synchronized int connectionCount()
+    {
+        return connectionMap.size();
+    }
+    
+    public synchronized boolean hasConnection()
+    {
+        return connectionCount() > 0;
+    }
+    
+    public String getHandle() 
+    { 
+        return handle; 
+    }
 }
