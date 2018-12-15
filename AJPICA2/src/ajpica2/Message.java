@@ -91,4 +91,14 @@ public class Message
         helloAckMessage.content = "HELLOACK";
         return helloAckMessage;       
     }
+    
+    public boolean isHelloMessage() 
+    { 
+        return to.isEmpty() && content.compareTo("HELLO") == 0; 
+    }
+    
+    public boolean isHelloAckMessage() 
+    { 
+        return content.compareTo("HELLOACK") == 0; 
+    }
 }
