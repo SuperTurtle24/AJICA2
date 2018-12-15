@@ -43,7 +43,7 @@ public class Agent
      * We want this mostly for bug checking, making sure our connections
      * aren't breaking somewhere
      */
-    Thread helloThread = new Thread(
+    Thread acceptThread = new Thread(
             new Runnable()
             {
                 @Override
@@ -149,8 +149,100 @@ public class Agent
         if(serverSocket == null) {
             InetAddress bindAddress = InetAddress.getByName(this.receivedIp);
             serverSocket = new ServerSocket(this.receivedPort, 0, bindAddress); 
-            helloThread.start();
+            acceptThread.start();
         }
+    }
+    
+    public void connectTo(final String ip, final int port)
+    {
+        if(isAlreadyConnected(ip))
+        {
+            System.err.println("Already Connected to " + ip);
+            return;
+        }
+        Thread helloThread = new Thread(
+                new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        InetAddress bindAddress;
+                        try
+                        {
+                            bindAddress = InetAddress.getByName(ip);
+                            Socket newSocket = new Socket(bindAddress, port);
+                            Connection partialConnection = new Connection(newSocket);
+                            partialConnection.sendMessage(Message.createHelloMessage(handle));
+                            
+                            while(!partialConnection.hasMessage())
+                            {
+                                /*
+                                Does nothing currently, we need to make it have a timeout
+                                */
+                            }
+                            Message ackMessage = partialConnection.recieveMessage();
+                            
+                            if(ackMessage.isHelloAckMessage())
+                            {
+                                partialConnection.setHandle(ackMessage.getFrom());
+                                addConnection(partialConnection);
+                            }
+                        }
+                        catch(UnknownHostException e)
+                        {
+                            Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, e);
+                        }
+                        catch(IOException e)
+                        {
+                            Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, e);
+                        }
+                    }
+                }
+        );
+        
+        helloThread.start();
+    }
+    
+    private void addConnection(final Connection connection) 
+    {
+        synchronized(lock) 
+        {
+            if(connectionMap.containsKey(connection.getHandle()))
+            {
+               System.err.println("[" + connection.getHandle() + "] is already an established connection."); 
+               return;
+            }
+            connectionMap.put(connection.getHandle(), connection);
+        }
+    }
+    
+    public void sendMessage(Message m)
+    {
+        synchronized(lock)
+        {
+            final List<String> receivers = m.getTo();
+            
+            for(String receiver : receivers)
+            {
+                Connection peerConnection = connectionMap.get(receiver);
+                if(peerConnection != null)
+                    peerConnection.sendMessage(m);
+                else
+                    System.err.println(receiver + " is an unknown agent");
+            }
+        }
+    }
+    
+    private synchronized boolean isAlreadyConnected(final String ipAddress) 
+    {
+        for(Connection c : connectionMap.values()) 
+        {
+            if(c.hasIpAddress(ipAddress)) 
+                return true;
+            
+        }
+
+        return false;
     }
     
     public void registerPortal(String k, Portal p)
@@ -176,24 +268,6 @@ public class Agent
     public void recieveMessage()
     {
         
-    }
-    
-    public void sendMessage(Message m, String k)
-    {
-        
-    }
-    
-    private void addConnection(final Connection connection) 
-    {
-        synchronized(lock) 
-        {
-            if(connectionMap.containsKey(connection.getHandle()))
-            {
-               System.err.println("[" + connection.getHandle() + "] is already an established connection."); 
-               return;
-            }
-            connectionMap.put(connection.getHandle(), connection);
-        }
     }
     
 }
