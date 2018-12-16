@@ -13,11 +13,15 @@ public class AJPICA2 {
     public static void main(String[] args) 
     {
         String loggerHandle = "Logger";
-        String loggerRecievedIp = "127.0.0.1";
-        int loggerPort = 0;
+        String loggerIp = "127.0.0.1";
+        int loggerPort = 5000;
         
-        TicketLogger tl = new TicketLogger(loggerHandle, loggerRecievedIp, loggerPort);
+        TicketLogger tl = new TicketLogger(loggerHandle, loggerIp, loggerPort);
         tl.begin();
-    }
-    
+        
+        String ticketingIP = "127.0.0.1";
+        int ticketingPort = 1000;
+    }    
 }
+    
+

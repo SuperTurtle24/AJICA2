@@ -140,7 +140,8 @@ public class Agent
     
     private void startPeerReceiver() throws UnknownHostException, IOException 
     {
-        if(serverSocket == null) {
+        if(serverSocket == null) 
+        {
             InetAddress bindAddress = InetAddress.getByName(this.Ip);
             serverSocket = new ServerSocket(this.port, 0, bindAddress); 
             acceptThread.start();
@@ -163,6 +164,7 @@ public class Agent
                         InetAddress bindAddress;
                         try
                         {
+                            System.out.println("Attempting to estabalish Connection");
                             bindAddress = InetAddress.getByName(ip);
                             Socket newSocket = new Socket(bindAddress, port);
                             Connection partialConnection = new Connection(newSocket);
@@ -218,9 +220,9 @@ public class Agent
             
             for(String receiver : receivers)
             {
-                Connection peerConnection = connectionMap.get(receiver);
-                if(peerConnection != null)
-                    peerConnection.sendMessage(m);
+                Connection connection = connectionMap.get(receiver);
+                if(connection != null)
+                    connection.sendMessage(m);
                 else
                     System.err.println(receiver + " is an unknown agent");
             }

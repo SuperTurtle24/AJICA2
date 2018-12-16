@@ -35,6 +35,11 @@ public class TicketLogger
         }
     }
     
+    public void connectTo(final String ip, final int port)
+    {
+        loggingAgent.connectTo(ip, port);
+    }
+    
     public void addTicket(Ticketing t)
     {
         ticketList.add(t);

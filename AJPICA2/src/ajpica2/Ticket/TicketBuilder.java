@@ -2,6 +2,7 @@ package ajpica2.Ticket;
 
 //@author scott
 import ajpica2.Agent;
+import ajpica2.Message;
 import ajpica2.TicketLogger;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,7 @@ public class TicketBuilder extends JFrame implements ActionListener {
     private Ticketing t;
     private Agent ticketAgent;
     protected JFrame ticketBuilder = new JFrame("Ticket Builder");
-
+    private String to = "Logger";
     /**
      * Contains the price of the ticket
      */
@@ -42,8 +43,8 @@ public class TicketBuilder extends JFrame implements ActionListener {
         ticketBuilder.setVisible(true);
     }
     
-    public TicketBuilder(String h, String ri, int rp) {
-        ticketAgent = new Agent(h, ri, rp);
+    public TicketBuilder(String h, String i, int p) {
+        ticketAgent = new Agent(h, i, p);
         final int width = 400, height = 200;
         ticketBuilder.setSize(width, height);
         ticketBuilder.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -159,6 +160,12 @@ public class TicketBuilder extends JFrame implements ActionListener {
         pricePanel.add(priceLabel);
         priceLabel.setText("1.2");
         ticketBuilder.add(pricePanel, BorderLayout.SOUTH);
+        
+        JButton buyticketButton = new JButton("Buy Ticket");
+        buyticketButton.setActionCommand("buyTicket");
+        buyticketButton.addActionListener(this);
+        pricePanel.add(buyticketButton);
+        
     }
 
     @Override
@@ -176,6 +183,10 @@ public class TicketBuilder extends JFrame implements ActionListener {
                 break;
             case "distanceD":
                 t = new DistanceD();
+                break;
+            case "buyTicket":
+                System.out.println("A ticket was bought. Cost: " + t.getCost() + ". Upgrades: " + t.getUpgrades());
+                sendMessage(ticketAgent.getHandle(), to);
         }
         priceLabel.setText(Double.toString(t.getCost()));
     }
@@ -190,6 +201,18 @@ public class TicketBuilder extends JFrame implements ActionListener {
         {
             Logger.getLogger(TicketLogger.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+    
+    public void connectTo(final String ip, final int port)
+    {
+        ticketAgent.connectTo(ip, port);
+    }
+    
+    public void sendMessage(String from, String to)
+    {
+        Message message = new Message(from, to);
+        message.append("A ticket was bought. Cost: " + t.getCost() + ". Upgrades: " + t.getUpgrades());
+        ticketAgent.sendMessage(message);
     }
 
 }
