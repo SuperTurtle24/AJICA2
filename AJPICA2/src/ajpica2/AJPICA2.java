@@ -12,8 +12,8 @@ package ajpica2;
 public class AJPICA2 {
     public static void main(String[] args) 
     {
-        String loggerHandle = "";
-        String loggerRecievedIp = "";
+        String loggerHandle = "Logger";
+        String loggerRecievedIp = "127.0.0.1";
         int loggerPort = 0;
         
         TicketLogger tl = new TicketLogger(loggerHandle, loggerRecievedIp, loggerPort);

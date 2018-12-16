@@ -23,9 +23,9 @@ import java.util.logging.Logger;
 public class Agent 
 {    
     private ServerSocket serverSocket;
-    private String receivedIp;
+    private String Ip;
     private String handle;
-    private int receivedPort;
+    private int port;
     private final Object lock = new Object();
     
     private HashMap<String, Portal> portalMap = new HashMap<>();
@@ -119,11 +119,11 @@ public class Agent
             }
     );
     
-    public Agent(String h, String ri, int rp)
+    public Agent(String h, String i, int p)
     {
         handle = h;
-        receivedIp = ri;
-        receivedPort = rp;
+        Ip = i;
+        port = p;
     }
     
     
@@ -141,8 +141,8 @@ public class Agent
     private void startPeerReceiver() throws UnknownHostException, IOException 
     {
         if(serverSocket == null) {
-            InetAddress bindAddress = InetAddress.getByName(this.receivedIp);
-            serverSocket = new ServerSocket(this.receivedPort, 0, bindAddress); 
+            InetAddress bindAddress = InetAddress.getByName(this.Ip);
+            serverSocket = new ServerSocket(this.port, 0, bindAddress); 
             acceptThread.start();
         }
     }
@@ -233,9 +233,7 @@ public class Agent
         {
             if(c.hasIpAddress(ipAddress)) 
                 return true;
-            
         }
-
         return false;
     }
     
@@ -260,18 +258,17 @@ public class Agent
     }
     
     public synchronized List<String> getConnectionHandles() {
-        List<String> peerGroupHandleList = new ArrayList<>();
+        List<String> handleList = new ArrayList<>();
         connectionMap.
              values().
              stream().
              forEach
-                ( 
-                    (connection) -> { peerGroupHandleList.add(connection.getHandle()); }
+                ((connection) -> { handleList.add(connection.getHandle()); }
                 );
         
-        Collections.sort(peerGroupHandleList);
+        Collections.sort(handleList);
         
-        return Collections.unmodifiableList(peerGroupHandleList);
+        return Collections.unmodifiableList(handleList);
     }
     
     public synchronized int connectionCount()
@@ -287,5 +284,10 @@ public class Agent
     public String getHandle() 
     { 
         return handle; 
+    }
+    
+    public int getPort()
+    {
+        return port;
     }
 }

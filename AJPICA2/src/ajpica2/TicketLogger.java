@@ -44,4 +44,9 @@ public class TicketLogger
     {
         return ticketList.size();
     }
+    
+    public int getPort()
+    {
+        return loggingAgent.getPort();
+    }
 }

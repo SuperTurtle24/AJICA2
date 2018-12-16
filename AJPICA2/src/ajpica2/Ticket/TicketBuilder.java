@@ -27,7 +27,7 @@ public class TicketBuilder extends JFrame implements ActionListener {
     JRadioButton distanceBButton = new JRadioButton("1.5 - 3 miles");
     JRadioButton distanceCButton = new JRadioButton("3 - 5 miles");
     JRadioButton distanceDButton = new JRadioButton("5 miles +");
-
+    
     public TicketBuilder() {
         final int width = 400, height = 200;
         ticketBuilder.setSize(width, height);
