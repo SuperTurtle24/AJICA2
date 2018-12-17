@@ -1,0 +1,2 @@
+https://i.imgur.com/mNMllfr.png
+Looks like message isn't getting sent through properly, maybe not being initialised correctly?

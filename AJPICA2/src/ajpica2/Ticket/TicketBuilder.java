@@ -185,8 +185,8 @@ public class TicketBuilder extends JFrame implements ActionListener {
                 t = new DistanceD();
                 break;
             case "buyTicket":
-                System.out.println("A ticket was bought. Cost: " + t.getCost() + ". Upgrades: " + t.getUpgrades());
                 sendMessage(ticketAgent.getHandle(), to);
+                break;
         }
         priceLabel.setText(Double.toString(t.getCost()));
     }
@@ -212,6 +212,7 @@ public class TicketBuilder extends JFrame implements ActionListener {
     {
         Message message = new Message(from, to);
         message.append("A ticket was bought. Cost: " + t.getCost() + ". Upgrades: " + t.getUpgrades());
+        System.out.println(message.toString());
         ticketAgent.sendMessage(message);
     }
 

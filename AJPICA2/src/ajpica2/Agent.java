@@ -55,12 +55,8 @@ public class Agent
                             {
                                 
                             }
-                            final Message recievedMessage = newConnection.recieveMessage();
-                            System.out.println("Message recieved: " + recievedMessage.toString());
-                            
-                            if(!recievedMessage.isHelloMessage())
-                                System.err.println("HELLO Message was incomplete, connection is now being dropped");
-                            else
+                            final Message recievedMessage = newConnection.recieveMessage();                            
+                            if(recievedMessage.isHelloMessage()) 
                             {
                                 final String newConnectionHandle = recievedMessage.getFrom();
                                 
@@ -75,12 +71,12 @@ public class Agent
                                             newConnection.sendMessage(Message.createHelloAckMessage(handle, newConnectionHandle));
                                         }
                                         else
-                                        {
                                             System.err.println("Already connected to this peer: " + newConnectionHandle);
-                                        }
                                     }
                                 }
-                            }
+                            } 
+                            else
+                                System.err.println("HELLO Message was incomplete, connection is now being dropped");
                         }
                         catch(IOException e)
                         {

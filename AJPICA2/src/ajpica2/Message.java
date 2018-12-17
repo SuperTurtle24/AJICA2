@@ -57,7 +57,7 @@ public class Message
     @Override
     public String toString()
     {
-        return String.format("^From:#([A-Za-z]+)#(,TO:#([A-Za-z]*)#)?,Contains:#(.+)#$",
+        return String.format("FROM:#%s#,TO:#%s#,CONTENT:#%s#",
                 from,
                 String.join(",", to),
                 content);
