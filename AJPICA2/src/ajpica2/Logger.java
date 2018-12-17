@@ -21,14 +21,11 @@ public class Logger {
         {
             Scanner scan = new Scanner(System.in);
             String input = scan.nextLine();
-            System.out.println("Choose an option \n1. Show All Tickets  \n2. Show Customers");
+            System.out.println("Choose an option \n1. Show All Tickets");
             switch(input)
             {
                 case "1":
                 showAllTickets(tl);
-                break;
-                case "2":
-                System.out.println("Not implemented yet");
                 break;
                 default:
                 System.err.println("Not a valid option");
