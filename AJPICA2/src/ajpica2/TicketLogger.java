@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ajpica2;
 import java.io.IOException;
 import ajpica2.Ticket.Ticketing;
@@ -5,7 +10,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
- * @author Joe
+ *
+ * @author super
  */
 public class TicketLogger extends Agent
 {
@@ -52,13 +58,6 @@ public class TicketLogger extends Agent
         loggingThread.start();
     }
     
-    /**
-     * A modified recieveThread, takes the message contents and adds
-     * it to the TickeList.
-     * FURTHER PLANS
-     * Have it convert the string into an actual ticket to make it a more
-     * concrete implementation
-     */
     Thread loggingThread = new Thread(
             new Runnable()
             {
