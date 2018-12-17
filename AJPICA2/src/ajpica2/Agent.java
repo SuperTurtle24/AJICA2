@@ -21,10 +21,6 @@ public class Agent
     private String handle;
     private int port;
     private final Object lock = new Object();
-    
-    private HashMap<String, Portal> portalMap = new HashMap<>();
-    private HashMap<String, Agent> agentMap = new HashMap<>();
-    
     protected HashMap<String, Connection> connectionMap = new HashMap<>();
     
     /**
@@ -180,6 +176,7 @@ public class Agent
                             {
                                 partialConnection.setHandle(ackMessage.getFrom());
                                 addConnection(partialConnection);
+                                System.out.println("Connection with: " + partialConnection.getHandle() + " estabalished");
                             }
                         }
                         catch(UnknownHostException e)
@@ -238,26 +235,6 @@ public class Agent
                 return true;
         }
         return false;
-    }
-    
-    public void registerPortal(String k, Portal p)
-    {
-        portalMap.put(k, p);
-    }
-    
-    public void unregisterPortal(String k)
-    {
-        portalMap.remove(k);
-    }
-    
-    public void addAgent(String k, Agent a)
-    {
-        agentMap.put(k, a);
-    }
-    
-    public void removeAgent(String k)
-    {
-        agentMap.remove(k);
     }
     
     /**

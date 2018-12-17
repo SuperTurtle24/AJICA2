@@ -4,7 +4,7 @@ import java.util.Scanner;
 /**
  * @author Joe
  */
-public class AJPICA2 {
+public class Logger {
     public static void main(String[] args) 
     {
         String ticketingIP = "127.0.0.1";
