@@ -4,7 +4,7 @@ import java.util.Scanner;
 /**
  * @author Joe
  */
-public class AJPICA2 {
+public class Logger {
     public static void main(String[] args) 
     {
         String ticketingIP = "127.0.0.1";
@@ -21,14 +21,11 @@ public class AJPICA2 {
         {
             Scanner scan = new Scanner(System.in);
             String input = scan.nextLine();
-            System.out.println("Choose an option \n1. Show All Tickets  \n2. Show Customers");
+            System.out.println("Choose an option \n1. Show All Tickets");
             switch(input)
             {
                 case "1":
                 showAllTickets(tl);
-                break;
-                case "2":
-                System.out.println("Not implemented yet");
                 break;
                 default:
                 System.err.println("Not a valid option");
