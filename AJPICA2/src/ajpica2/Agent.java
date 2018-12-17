@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ajpica2;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -15,10 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
- *
- * @author super
+ * @author Joe
  */
 public class Agent 
 {    
@@ -34,8 +28,8 @@ public class Agent
     protected HashMap<String, Connection> connectionMap = new HashMap<>();
     
     /**
-     * We want this mostly for bug checking, making sure our connections
-     * aren't breaking somewhere
+     * Accepts and sends back HELLO Messages,
+     * used to create a connection between 2 actors.
      */
     Thread acceptThread = new Thread(
             new Runnable()
@@ -69,6 +63,7 @@ public class Agent
                                             newConnection.setHandle(newConnectionHandle);
                                             addConnection(newConnection);
                                             newConnection.sendMessage(Message.createHelloAckMessage(handle, newConnectionHandle));
+                                            System.out.println("Connection with " + newConnectionHandle + " establalished");
                                         }
                                         else
                                             System.err.println("Already connected to " + newConnectionHandle);
@@ -87,6 +82,12 @@ public class Agent
             }
     );
     
+    /**
+     * Waits for inputs from other actors,
+     * and processes them within the For Loop,
+     * if @Overrided changes should mostly be made
+     * within said For Loop
+     */
     Thread receivalThread = new Thread(
             new Runnable()
             {
@@ -122,7 +123,10 @@ public class Agent
         port = p;
     }
     
-    
+    /**
+     * Starts up the necessary communication threads
+     * for the Agent
+     */
     public void start() throws IOException
     {
         startReceiver();
@@ -139,6 +143,9 @@ public class Agent
         }
     }
     
+    /**
+     * Call when connecting to another agent
+     */
     public void connectTo(final String ip, final int port)
     {
         if(isAlreadyConnected(ip))
@@ -220,6 +227,9 @@ public class Agent
         }
     }
     
+    /**
+     * Checks whether a connection exists or not
+     */
     private synchronized boolean isAlreadyConnected(final String ipAddress) 
     {
         for(Connection c : connectionMap.values()) 
@@ -250,6 +260,9 @@ public class Agent
         agentMap.remove(k);
     }
     
+    /**
+     * @return all the connections for an Agent
+     */
     public synchronized List<String> getConnectionHandles() {
         List<String> handleList = new ArrayList<>();
         connectionMap.
