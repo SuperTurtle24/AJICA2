@@ -13,20 +13,21 @@ import java.util.logging.Logger;
  *
  * @author super
  */
-public class TicketLogger
+public class TicketLogger extends Agent
 {
-    private ArrayList<Ticketing> ticketList = new ArrayList<>();
-    private Agent loggingAgent;
+    private ArrayList<String> ticketList = new ArrayList<>();
+    private Object lock = new Object();
     
     public TicketLogger(String h, String ri, int rp)
     {
-        loggingAgent = new Agent(h, ri, rp);
+        super(h, ri, rp);
     }
     
     public void begin()
     {
-        try{
-            loggingAgent.start();
+        try
+        {
+            start();
             System.out.println("Agent started");
         }
         catch(IOException e)
@@ -35,12 +36,7 @@ public class TicketLogger
         }
     }
     
-    public void connectTo(final String ip, final int port)
-    {
-        loggingAgent.connectTo(ip, port);
-    }
-    
-    public void addTicket(Ticketing t)
+    public void addTicket(String t)
     {
         ticketList.add(t);
     }
@@ -50,8 +46,47 @@ public class TicketLogger
         return ticketList.size();
     }
     
-    public int getPort()
+    public ArrayList<String> getTicketList()
     {
-        return loggingAgent.getPort();
+        return ticketList;
     }
+    
+    @Override
+    public void start() throws IOException
+    {
+        startReceiver();
+        loggingThread.start();
+    }
+    
+    Thread loggingThread = new Thread(
+            new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    while(true)
+                    {
+                        synchronized(lock)
+                        {
+                            for(Connection connection : connectionMap.values())
+                            {
+                                try
+                                {
+                                    if(connection.hasMessage())
+                                    {
+                                        Message newMessage = connection.recieveMessage();
+                                        addTicket(newMessage.getContent());
+                                        System.out.println("New Ticket added: " + newMessage.getContent());
+                                    }
+                                }
+                                catch (IOException e)
+                                {
+                                    Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    );
 }

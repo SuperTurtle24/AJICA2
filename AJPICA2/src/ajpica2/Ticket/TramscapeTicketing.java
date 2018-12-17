@@ -18,7 +18,5 @@ public class TramscapeTicketing {
         TicketBuilder simulateTicket = new TicketBuilder(ticketHandle, ticketRecievedIp, ticketPort);
         simulateTicket.begin();
         simulateTicket.connectTo(loggerIp, loggerPort);
-        
-        
     }
 }

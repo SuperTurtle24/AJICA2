@@ -31,7 +31,7 @@ public class Agent
     private HashMap<String, Portal> portalMap = new HashMap<>();
     private HashMap<String, Agent> agentMap = new HashMap<>();
     
-    private HashMap<String, Connection> connectionMap = new HashMap<>();
+    protected HashMap<String, Connection> connectionMap = new HashMap<>();
     
     /**
      * We want this mostly for bug checking, making sure our connections
@@ -71,7 +71,7 @@ public class Agent
                                             newConnection.sendMessage(Message.createHelloAckMessage(handle, newConnectionHandle));
                                         }
                                         else
-                                            System.err.println("Already connected to this peer: " + newConnectionHandle);
+                                            System.err.println("Already connected to " + newConnectionHandle);
                                     }
                                 }
                             } 
@@ -123,18 +123,13 @@ public class Agent
     }
     
     
-    /**
-     * This may need changes, we aren't a P2P chat service
-     * so we don't really need to dynamically add Agents/Nodes
-     * to our service.
-     */
     public void start() throws IOException
     {
-        startPeerReceiver();
+        startReceiver();
         receivalThread.start();
     }
     
-    private void startPeerReceiver() throws UnknownHostException, IOException 
+    protected void startReceiver() throws UnknownHostException, IOException 
     {
         if(serverSocket == null) 
         {
