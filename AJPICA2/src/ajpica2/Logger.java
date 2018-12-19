@@ -9,11 +9,11 @@ public class Logger {
     public static void main(String[] args) 
     {
         String ticketingIP = "127.0.0.1";
-        int ticketingPort = 1000;
+        int ticketingPort = 10000;
         
         String loggerHandle = "Logger";
         String loggerIp = "127.0.0.1";
-        int loggerPort = 5000;
+        int loggerPort = 50000;
         
         TicketLogger tl = new TicketLogger(loggerHandle, loggerIp, loggerPort);
         tl.begin();
