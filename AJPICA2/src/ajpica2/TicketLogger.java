@@ -7,14 +7,14 @@ import java.util.logging.Logger;
 /**
  * @author Joe
  */
-public class TicketLogger
+public class TicketLogger extends Agent
 {
     private ArrayList<String> ticketList = new ArrayList<>();
-    private Agent loggerAgent;
+    private Object lock = new Object();
     
     public TicketLogger(String h, String ri, int rp)
     {
-        loggerAgent = new Agent(h, ri, rp);
+        super(h, ri, rp);
     }
     
     public void begin()
@@ -45,9 +45,51 @@ public class TicketLogger
         return ticketList;
     }
     
+    @Override
     public void start() throws IOException
     {
-        loggerAgent.start();
+        startReceiver();
+        loggingThread.start();
     }
     
+    /**
+     * A modified recieveThread, takes the message contents and adds
+     * it to the TickeList.
+     * FURTHER PLANS
+     * Have it convert the string into an actual ticket to make it a more
+     * concrete implementation
+     */
+    Thread loggingThread = new Thread(
+            new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    while(true)
+                    {
+                        synchronized(lock)
+                        {
+                            for(Connection connection : connectionMap.values())
+                            {
+                                try
+                                {
+                                    if(connection.hasMessage())
+                                    {
+                                        
+                                        System.out.print("");
+                                        Message newMessage = connection.recieveMessage();
+                                        System.out.println("New Ticket added: " + newMessage.getContent());
+                                        addTicket(newMessage.getContent());
+                                    }
+                                }
+                                catch (IOException e)
+                                {
+                                    Logger.getLogger(Agent.class.getName()).log(Level.SEVERE, null, e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    );
 }
