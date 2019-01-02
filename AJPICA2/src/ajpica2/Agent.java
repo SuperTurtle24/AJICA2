@@ -16,18 +16,18 @@ import java.util.logging.Logger;
  */
 public class Agent 
 {    
-    private ServerSocket serverSocket;
-    private String Ip;
-    private String handle;
-    private int port;
-    private final Object lock = new Object();
+    protected ServerSocket serverSocket;
+    protected String Ip;
+    protected String handle;
+    protected int port;
+    protected final Object lock = new Object();
     protected HashMap<String, Connection> connectionMap = new HashMap<>();
     
     /**
      * Accepts and sends back HELLO Messages,
      * used to create a connection between 2 actors.
      */
-    Thread acceptThread = new Thread(
+    protected Thread acceptThread = new Thread(
             new Runnable()
             {
                 @Override
@@ -84,7 +84,7 @@ public class Agent
      * if @Overrided changes should mostly be made
      * within said For Loop
      */
-    Thread receivalThread = new Thread(
+    protected Thread receivalThread = new Thread(
             new Runnable()
             {
                 @Override
@@ -194,7 +194,7 @@ public class Agent
         helloThread.start();
     }
     
-    private void addConnection(final Connection connection) 
+    protected void addConnection(final Connection connection) 
     {
         synchronized(lock) 
         {
@@ -227,7 +227,7 @@ public class Agent
     /**
      * Checks whether a connection exists or not
      */
-    private synchronized boolean isAlreadyConnected(final String ipAddress) 
+    protected synchronized boolean isAlreadyConnected(final String ipAddress) 
     {
         for(Connection c : connectionMap.values()) 
         {
