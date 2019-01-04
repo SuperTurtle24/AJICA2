@@ -29,6 +29,21 @@ public class Message
     }
     
     /**
+     * For messages between Portals
+     * @param to1 should be the portal
+     * @param to2 should be the agent
+     */
+    public Message(String from, String to1, String to2)
+    {
+        this.from = from;
+        this.to = new ArrayList<>();
+        if(to1 != null && to1.length() > 0)
+            this.to.add(to1);
+        if(to2 != null && to2.length() > 0)
+            this.to.add(to2);
+      }
+    
+    /**
      * Used to add the contents to a Message
      * @param appendWith The content section of a message
      */

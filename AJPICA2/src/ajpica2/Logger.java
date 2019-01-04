@@ -7,10 +7,7 @@ import java.util.Scanner;
  */
 public class Logger {
     public static void main(String[] args) 
-    {
-        String ticketingIP = "127.0.0.1";
-        int ticketingPort = 10000;
-        
+    {       
         String loggerHandle = "Logger";
         String loggerIp = "127.0.0.1";
         int loggerPort = 50000;
@@ -25,6 +22,15 @@ public class Logger {
         TicketBuilder simulateTicket = new TicketBuilder(ticketHandle, ticketRecievedIp, ticketPort);
         simulateTicket.begin();
         simulateTicket.connectTo(loggerIp, loggerPort);
+        
+        String portalHandle = "Portal";
+        String portalIP = "127.0.0.1";
+        int portalPort = 30000;
+        
+        Portal portal = new Portal(portalHandle, portalIP, portalPort);
+        portal.begin();
+        simulateTicket.connectTo(portalIP, portalPort);
+        portal.connectTo(loggerIp, loggerPort);
         
         while(true)
         {

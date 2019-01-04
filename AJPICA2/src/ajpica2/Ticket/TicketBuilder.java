@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import java.util.ArrayList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class TicketBuilder extends JFrame implements ActionListener {
@@ -18,7 +19,8 @@ public class TicketBuilder extends JFrame implements ActionListener {
     private Ticketing t;
     private Agent ticketAgent;
     protected JFrame ticketBuilder = new JFrame("Ticket Builder");
-    private String to = "Logger";
+    private String to1 = "Logger";
+    private String to2 = "Portal";
     /**
      * Contains the price of the ticket
      */
@@ -185,7 +187,7 @@ public class TicketBuilder extends JFrame implements ActionListener {
                 t = new DistanceD();
                 break;
             case "buyTicket":
-                sendMessage(ticketAgent.getHandle(), to);
+                sendMessage(ticketAgent.getHandle(), to1, to2);
                 break;
         }
         priceLabel.setText(Double.toString(t.getCost()));
@@ -208,9 +210,9 @@ public class TicketBuilder extends JFrame implements ActionListener {
         ticketAgent.connectTo(ip, port);
     }
     
-    public void sendMessage(String from, String to)
+    public void sendMessage(String from, String t1, String t2)
     {
-        Message message = new Message(from, to);
+        Message message = new Message(from, t1, t2);
         message.append("A ticket was bought. Cost: " + t.getCost() + ". Upgrades: " + t.getUpgrades());
         System.out.println(message.toString());
         ticketAgent.sendMessage(message);

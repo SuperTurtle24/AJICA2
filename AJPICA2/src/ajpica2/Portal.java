@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Joe
@@ -26,7 +27,7 @@ public class Portal
     protected String handle;
     protected int port;
     protected final Object lock = new Object();
-    protected HashMap<String, Connection> connectionMap = new HashMap<>();
+    protected ConcurrentHashMap<String, Connection> connectionMap = new ConcurrentHashMap<>();
     
     /**
      * Accepts and sends back HELLO Messages,
@@ -64,7 +65,7 @@ public class Portal
                                             newConnection.setHandle(newConnectionHandle);
                                             addConnection(newConnection);
                                             newConnection.sendMessage(Message.createHelloAckMessage(handle, newConnectionHandle));
-                                            System.out.println("Connection with " + newConnectionHandle + " establalished");
+                                            System.err.println(handle + ": Connection with " + newConnectionHandle + " establalished");
                                         }
                                         else
                                             System.err.println("Already connected to " + newConnectionHandle);
@@ -104,7 +105,16 @@ public class Portal
                                 try
                                 {
                                     if(connection.hasMessage())
-                                        System.out.println(connection.recieveMessage());
+                                    {
+                                        System.out.println("");
+                                        Message newMessage = connection.recieveMessage();
+                                        System.err.println("Message Recieved: " + newMessage.getContent());
+                                        List<String> toList = newMessage.getTo();
+                                        String agentTo = toList.get(1);
+                                        Message agentMessage = new Message(handle, agentTo);
+                                        agentMessage.append(newMessage.getContent());
+                                        connection.sendMessage(agentMessage);
+                                    }
                                 }
                                 catch (IOException e)
                                 {
@@ -132,6 +142,19 @@ public class Portal
     {
         startReceiver();
         receivalThread.start();
+    }
+    
+    public void begin()
+    {
+        try
+        {
+            start();
+            System.out.println("Portal Started");
+        }
+        catch(IOException e)
+        {
+            Logger.getLogger(TicketLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
     
     protected void startReceiver() throws UnknownHostException, IOException 

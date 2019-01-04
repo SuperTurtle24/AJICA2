@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ public class Agent
     protected String handle;
     protected int port;
     protected final Object lock = new Object();
-    protected HashMap<String, Connection> connectionMap = new HashMap<>();
+    protected ConcurrentHashMap<String, Connection> connectionMap = new ConcurrentHashMap<>();
     
     /**
      * Accepts and sends back HELLO Messages,
@@ -59,7 +60,7 @@ public class Agent
                                             newConnection.setHandle(newConnectionHandle);
                                             addConnection(newConnection);
                                             newConnection.sendMessage(Message.createHelloAckMessage(handle, newConnectionHandle));
-                                            System.out.println("Connection with " + newConnectionHandle + " establalished");
+                                            System.out.println(handle + ": Connection with " + newConnectionHandle + " establalished");
                                         }
                                         else
                                             System.err.println("Already connected to " + newConnectionHandle);
@@ -220,6 +221,19 @@ public class Agent
                     connection.sendMessage(m);
                 else
                     System.err.println(receiver + " is an unknown agent");
+            }
+        }
+    }
+    
+    
+    public void sendMessageViaPortal(Message m)
+    {
+        synchronized(lock)
+        {
+            final List<String> receivers  = m.getTo();
+            for(String receiver : receivers)
+            {
+                
             }
         }
     }
