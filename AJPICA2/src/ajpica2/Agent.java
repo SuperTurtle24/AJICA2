@@ -41,7 +41,7 @@ public class Agent
                             final Socket newClientSocket = serverSocket.accept();
                             
                             final Connection newConnection = new Connection(newClientSocket);
-                            System.out.println("Awaiting HELLO Message from a new connection");
+                            System.out.println(handle + ": Awaiting HELLO Message from a new connection");
                             while(!newConnection.hasMessage())
                             {
                                 
@@ -63,12 +63,12 @@ public class Agent
                                             System.out.println(handle + ": Connection with " + newConnectionHandle + " establalished");
                                         }
                                         else
-                                            System.err.println("Already connected to " + newConnectionHandle);
+                                            System.err.println(handle + ": Already connected to " + newConnectionHandle);
                                     }
                                 }
                             } 
                             else
-                                System.err.println("HELLO Message was incomplete, connection is now being dropped");
+                                System.err.println(handle + ": HELLO Message was incomplete, connection is now being dropped");
                         }
                         catch(IOException e)
                         {
@@ -100,7 +100,7 @@ public class Agent
                                 try
                                 {
                                     if(connection.hasMessage())
-                                        System.out.println(connection.recieveMessage());
+                                        System.out.println(handle + ": " +  connection.recieveMessage());
                                 }
                                 catch (IOException e)
                                 {
@@ -159,7 +159,7 @@ public class Agent
                         InetAddress bindAddress;
                         try
                         {
-                            System.out.println("Attempting to estabalish Connection");
+                            System.out.println(handle + ": Attempting to estabalish Connection");
                             bindAddress = InetAddress.getByName(ip);
                             Socket newSocket = new Socket(bindAddress, port);
                             Connection partialConnection = new Connection(newSocket);
@@ -177,7 +177,7 @@ public class Agent
                             {
                                 partialConnection.setHandle(ackMessage.getFrom());
                                 addConnection(partialConnection);
-                                System.out.println("Connection with: " + partialConnection.getHandle() + " estabalished");
+                                System.out.println(handle + ": Connection with: " + partialConnection.getHandle() + " estabalished");
                             }
                         }
                         catch(UnknownHostException e)

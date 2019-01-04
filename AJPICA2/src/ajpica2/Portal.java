@@ -108,7 +108,7 @@ public class Portal
                                     {
                                         System.out.println("");
                                         Message newMessage = connection.recieveMessage();
-                                        System.err.println("Message Recieved: " + newMessage.getContent());
+                                        System.err.println(handle + ": Message Recieved: " + newMessage.getContent());
                                         List<String> toList = newMessage.getTo();
                                         String agentTo = toList.get(1);
                                         Message agentMessage = new Message(handle, agentTo);
@@ -186,7 +186,7 @@ public class Portal
                         InetAddress bindAddress;
                         try
                         {
-                            System.out.println("Attempting to estabalish Connection");
+                            System.out.println(handle + ": Attempting to estabalish Connection");
                             bindAddress = InetAddress.getByName(ip);
                             Socket newSocket = new Socket(bindAddress, port);
                             Connection partialConnection = new Connection(newSocket);
@@ -204,7 +204,7 @@ public class Portal
                             {
                                 partialConnection.setHandle(ackMessage.getFrom());
                                 addConnection(partialConnection);
-                                System.out.println("Connection with: " + partialConnection.getHandle() + " estabalished");
+                                System.out.println(handle + ": Connection with: " + partialConnection.getHandle() + " estabalished");
                             }
                         }
                         catch(UnknownHostException e)

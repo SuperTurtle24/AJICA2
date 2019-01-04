@@ -29,7 +29,7 @@ public class Logger {
         
         Portal portal = new Portal(portalHandle, portalIP, portalPort);
         portal.begin();
-        simulateTicket.connectTo(portalIP, portalPort);
+        portal.connectTo(ticketRecievedIp, ticketPort);
         portal.connectTo(loggerIp, loggerPort);
         
         while(true)
